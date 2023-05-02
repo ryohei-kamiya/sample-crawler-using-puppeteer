@@ -2,6 +2,7 @@ import argparse
 import re
 import asyncio
 import traceback
+import random
 from urllib.parse import urlparse
 from pyppeteer import launch
 
@@ -82,7 +83,9 @@ async def crawl_pages(
                 traceback.print_exc()
 
     sub_urls = set()
-    tasks = [crawl_page(url, output_dir, sub_urls) for url in urls]
+    randomized_urls = list(urls)
+    random.shuffle(randomized_urls)
+    tasks = [crawl_page(url, output_dir, sub_urls) for url in randomized_urls]
     await asyncio.gather(*tasks)
 
     # クロール済みリンク、外部リンクは、次のクロール対象(next_urls)から除去する
