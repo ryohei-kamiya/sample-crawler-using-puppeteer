@@ -105,6 +105,7 @@ async def crawl_pages(
             excluded_urls,
             redirected_urls,
             depth - 1,
+            limit,
         )
 
 
@@ -138,7 +139,7 @@ async def main(args):
         excluded_urls,
         redirected_urls,
         depth=args.depth,
-        limit=5,
+        limit=args.limit,
     )
 
     # 処理済みURLのリストを出力
@@ -181,6 +182,9 @@ if __name__ == "__main__":
     parser.add_argument("urllistfile", type=str, help="URL list for crawling")
     parser.add_argument(
         "--depth", type=int, default=-1, help="Set the maximum number of sublinks"
+    )
+    parser.add_argument(
+        "--limit", type=int, default=-1, help="Set the concurrent crawl executions"
     )
     args = parser.parse_args()
     asyncio.get_event_loop().run_until_complete(main(args))
